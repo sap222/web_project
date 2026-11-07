@@ -19,6 +19,7 @@ export default function SuperDashboard() {
         <Stat label="Active Hospitals" value={stats.activeHospitals} />
         <Stat label="Doctors" value={stats.doctors} />
         <Stat label="Patients" value={stats.patients} />
+        <Stat label="Upcoming Appointments" value={stats.appointments} />
       </div>
     </>
   );

@@ -8,6 +8,8 @@ import AdminDashboard from './pages/AdminDashboard.jsx';
 import Doctors from './pages/Doctors.jsx';
 import Patients from './pages/Patients.jsx';
 import MyPatients from './pages/MyPatients.jsx';
+import PatientRecords from './pages/PatientRecords.jsx';
+import Appointments from './pages/Appointments.jsx';
 
 export const HOME = {
   super_admin: '/super',
@@ -38,7 +40,10 @@ export default function App() {
       <Route path="/admin" element={<Guard role="hospital_admin"><AdminDashboard /></Guard>} />
       <Route path="/admin/doctors" element={<Guard role="hospital_admin"><Doctors /></Guard>} />
       <Route path="/admin/patients" element={<Guard role="hospital_admin"><Patients /></Guard>} />
+      <Route path="/admin/appointments" element={<Guard role="hospital_admin"><Appointments /></Guard>} />
       <Route path="/doctor" element={<Guard role="doctor"><MyPatients /></Guard>} />
+      <Route path="/doctor/patients/:id" element={<Guard role="doctor"><PatientRecords /></Guard>} />
+      <Route path="/doctor/appointments" element={<Guard role="doctor"><Appointments /></Guard>} />
       <Route path="*" element={<Root />} />
     </Routes>
   );

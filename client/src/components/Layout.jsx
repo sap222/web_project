@@ -10,8 +10,12 @@ const LINKS = {
     { to: '/admin', label: 'Dashboard', end: true },
     { to: '/admin/doctors', label: 'Doctors' },
     { to: '/admin/patients', label: 'Patients' },
+    { to: '/admin/appointments', label: 'Appointments' },
   ],
-  doctor: [{ to: '/doctor', label: 'My Patients', end: true }],
+  doctor: [
+    { to: '/doctor', label: 'Dashboard', end: true },
+    { to: '/doctor/appointments', label: 'Appointments' },
+  ],
 };
 
 export default function Layout({ children }) {

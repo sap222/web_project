@@ -42,6 +42,7 @@ export default function AdminDashboard() {
         <Stat label="Doctors" value={stats.doctors} />
         <Stat label="Patients" value={stats.patients} />
         <Stat label="Unassigned Patients" value={stats.unassigned} />
+        <Stat label="Upcoming Appointments" value={stats.appointments} />
       </div>
 
       <h3>Hospital Information</h3>

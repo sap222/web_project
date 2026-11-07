@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import Patient from '../models/Patient.js';
 import User from '../models/User.js';
+import Appointment from '../models/Appointment.js';
+import MedicalRecord from '../models/MedicalRecord.js';
 import { protect, allow } from '../middleware/auth.js';
 import { HttpError } from '../middleware/error.js';
 import { pick } from '../utils/pick.js';
@@ -15,6 +17,7 @@ const FIELDS = ['name', 'age', 'gender', 'phone', 'address'];
 async function resolveDoctor(req) {
   const id = req.body.doctor;
   if (!id) return null;
+  if (typeof id !== 'string') throw new HttpError(400, 'Invalid doctor');
   const doctor = await User.findOne({ _id: id, role: 'doctor', hospital: req.user.hospital });
   if (!doctor) throw new HttpError(400, 'Doctor does not belong to this hospital');
   return doctor._id;
@@ -70,6 +73,10 @@ router.delete('/:id', async (req, res, next) => {
   try {
     const patient = await Patient.findOneAndDelete({ _id: req.params.id, hospital: req.user.hospital });
     if (!patient) throw new HttpError(404, 'Patient not found');
+    await Promise.all([
+      Appointment.deleteMany({ patient: patient._id }),
+      MedicalRecord.deleteMany({ patient: patient._id }),
+    ]);
     res.json({ message: 'Patient removed' });
   } catch (err) {
     next(err);

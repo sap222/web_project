@@ -2,6 +2,8 @@ import { Router } from 'express';
 import Hospital from '../models/Hospital.js';
 import User from '../models/User.js';
 import Patient from '../models/Patient.js';
+import Appointment from '../models/Appointment.js';
+import MedicalRecord from '../models/MedicalRecord.js';
 import { protect, allow } from '../middleware/auth.js';
 import { HttpError } from '../middleware/error.js';
 import { pick } from '../utils/pick.js';
@@ -88,7 +90,9 @@ router.delete('/:id', async (req, res, next) => {
   try {
     const hospital = await Hospital.findByIdAndDelete(req.params.id);
     if (!hospital) throw new HttpError(404, 'Hospital not found');
-    await Promise.all([User.deleteMany({ hospital: hospital._id }), Patient.deleteMany({ hospital: hospital._id })]);
+    await Promise.all(
+      [User, Patient, Appointment, MedicalRecord].map((Model) => Model.deleteMany({ hospital: hospital._id }))
+    );
     res.json({ message: 'Hospital deleted' });
   } catch (err) {
     next(err);

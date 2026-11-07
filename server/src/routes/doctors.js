@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import User from '../models/User.js';
 import Patient from '../models/Patient.js';
+import Appointment from '../models/Appointment.js';
 import { protect, allow } from '../middleware/auth.js';
 import { HttpError } from '../middleware/error.js';
 import { pick } from '../utils/pick.js';
@@ -55,7 +56,10 @@ router.delete('/:id', async (req, res, next) => {
   try {
     const doctor = await User.findOneAndDelete(scope(req, { _id: req.params.id }));
     if (!doctor) throw new HttpError(404, 'Doctor not found');
-    await Patient.updateMany({ doctor: doctor._id }, { doctor: null });
+    await Promise.all([
+      Patient.updateMany({ doctor: doctor._id }, { doctor: null }),
+      Appointment.updateMany({ doctor: doctor._id, status: 'scheduled' }, { status: 'cancelled' }),
+    ]);
     res.json({ message: 'Doctor removed' });
   } catch (err) {
     next(err);

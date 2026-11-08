@@ -9,9 +9,8 @@ A multi-tenant hospital management platform built with the MERN stack
 - Super Admin dashboard: system totals; add, activate, deactivate and delete hospitals
 - Hospital Admin panel: hospital information, doctor management
 - Patient registration and assignment to a doctor of the same hospital
-- Doctor view of their assigned patients
-
-Planned: medical records and appointment management.
+- Doctor dashboard: assigned patients and their medical records
+- Appointment management: book, reschedule, complete and cancel, with double-booking prevented
 
 ## Setup
 
